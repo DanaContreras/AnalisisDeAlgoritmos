@@ -1,0 +1,10 @@
+a1 Pepe 7 5 8 4 5
+a2 Juan 3 7 9 2 4
+a3 Lucia 8 4 7 8 9
+a4 Carlos 2 4 8 5.5 4
+a5 Pedro 10 7 4 8 3.5
+a6 Tito 7 7 7 7 6
+a7 Maria 6 10 4 8 8.5
+a8 Pepe 7 5 8 4 5
+a9 Juan 3 7 9 2 4
+a10 Lucia 8 4 7 8 9
