@@ -65,7 +65,8 @@ public class ejerc2_8 {
         System.out.println("(1) Calcular media de los alumnos.");
         System.out.println("(2) Calcular media de asignaturas.");
         System.out.println("(3) Calcular media total de la clase.");
-        System.out.println("(4) Ordenar listado de alumnos por notas medias.");
+        System.out.println("(4) Ordenar listado de alumnos por notas medias. (Mergesort)");
+        System.out.println("(5) Ordenar listado de alumnos por notas medias. (Quicksort)");
         System.out.println("-------------------------------------------------");
      
         opcion = teclado.nextInt();
@@ -80,7 +81,12 @@ public class ejerc2_8 {
             case 3: calcularMediaTotal(listAlumnos);
                     break;
             
-            case 4: ordenarListado(listAlumnos);
+            case 4: mergeSort(listAlumnos,0,listAlumnos.size()-1);
+                    System.out.println(listAlumnos);
+                    break;
+                    
+            case 5: quickSort(listAlumnos,0,listAlumnos.size()-1);
+                    System.out.println(listAlumnos);
                     break;
         }
         
@@ -192,8 +198,101 @@ public class ejerc2_8 {
         
     }
     
-    private static void ordenarListado (ArrayList lista){
+    private static void mergeSort (ArrayList<Alumno> lista, int izq, int der){
         
+        if (izq < der) {
+
+            int mitad = (izq + der) / 2;
+
+            mergeSort(lista, izq, mitad);
+            mergeSort(lista, mitad + 1, der);
+
+            // Mezcla de sublistas
+            merge(lista, izq, mitad, der);
+        }
+        
+    }
+    
+    private static void merge (ArrayList<Alumno> lista, int izq, int m, int der){
+
+        int n1 = m - izq + 1;
+        int n2 = der - m;
+
+        ArrayList<Alumno> listaIzq = new ArrayList();
+        ArrayList<Alumno> listaDer = new ArrayList();
+
+        // Se genera lista izq y der
+        for (int i = 0; i < n1; i++)
+            listaIzq.add(lista.get(izq + i));
+
+        for (int j = 0; j < n2; j++)
+            listaDer.add(lista.get(m + 1 + j));
+
+        int i = 0, j = 0, k = izq;
+       
+        while (i < n1 && j < n2) {
+
+            if (calcularMedia(listaIzq.get(i).getNotas()) <= calcularMedia(listaDer.get(j).getNotas())) {
+                lista.set(k, listaIzq.get(i));
+                i++;
+            } else {
+                lista.set(k, listaDer.get(j));
+                j++;
+            }
+
+            k++;
+        }
+
+        while (i < n1) {
+            lista.set(k, listaIzq.get(i));
+            i++;
+            k++;
+        }
+
+        while (j < n2) {
+            lista.set(k, listaDer.get(j));
+            j++;
+            k++;
+        }
+        
+    }
+
+    private static int particion (ArrayList<Alumno> lista, int izq, int der) {
+
+        double pivote = calcularMedia(lista.get(izq).getNotas());
+        boolean seguir = true;
+
+        while (seguir) {
+
+            while (calcularMedia(lista.get(izq).getNotas()) < pivote)
+                izq++;
+
+            while (calcularMedia(lista.get(der).getNotas()) > pivote) {
+                der--;
+            }
+
+            if (izq >= der) 
+                seguir = false;
+            else {
+                Alumno temp = lista.get(izq);
+                lista.set(izq, lista.get(der));
+                lista.set(der, temp);
+                izq++;
+                der--;
+            }
+        }
+
+        return der;
+    }
+
+    private static void quickSort(ArrayList<Alumno> lista, int izq, int der) {
+        
+        if (izq < der) {
+            int indice = particion(lista, izq, der);
+            quickSort(lista, izq, indice);
+            quickSort(lista, indice + 1, der);
+        }
+
     }
     
 }
